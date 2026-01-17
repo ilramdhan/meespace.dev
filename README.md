@@ -69,11 +69,28 @@ This project follows a modular App Router structure:
 src/
 ├── app/                  # Routes (Public & Admin)
 ├── components/           # UI Components (Atomic design)
+│   ├── admin/            # Admin-specific components
+│   ├── public/           # Public page components
+│   └── shared/           # Shared reusable components
 ├── data/                 # Static JSON Data (Mock)
 ├── lib/                  # Utilities & Configs
 ├── actions/              # Server Actions (Backend Logic)
 └── types/                # TypeScript Interfaces
 ```
+
+## 🧩 Shared Components
+
+Reusable UI components for consistency across all pages:
+
+| Component | Purpose |
+|-----------|---------|
+| `Button` | Primary/secondary/ghost button variants |
+| `Card` | Consistent card with rounded-xl styling |
+| `PageHeader` | Page title and description |
+| `Badge` | Status badges with color variants |
+| `Icon` | Material Symbols icon wrapper |
+
+For detailed usage, see [UI Guidelines](./docs/UI_GUIDELINES.md).
 
 For a deep dive into the architecture, routing, and coding standards, please read [CONTRIBUTING.md](./CONTRIBUTING.md).
 

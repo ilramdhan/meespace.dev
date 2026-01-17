@@ -31,7 +31,7 @@ export function DashboardStats({ stats }: { stats: StatItem[] }) {
             {stats.map((stat, idx) => (
                 <div
                     key={idx}
-                    className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card p-6 flex flex-col justify-between h-36 border border-gray-100 dark:border-gray-800"
+                    className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl p-6 flex flex-col justify-between h-36 border border-gray-100 dark:border-gray-800"
                 >
                     <div className="flex items-start justify-between">
                         <div

@@ -18,7 +18,7 @@ export default function AdminDashboardPage() {
                 </span>
                 Refresh Data
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-sage-green hover:bg-[#789586] text-white rounded-full text-sm font-medium shadow-sm transition-colors cursor-pointer">
+            <button className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-text-main rounded-full text-sm font-bold shadow-sm transition-colors cursor-pointer">
                 <span className="material-symbols-outlined text-sm">add</span>
                 New Entry
             </button>
@@ -26,21 +26,21 @@ export default function AdminDashboardPage() {
     );
 
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
             <AdminPageHeader
                 title="Dashboard Overview"
                 description="Here's what's happening with your portfolio today."
                 rightAction={RightAction}
             />
 
-            <div className="max-w-[1400px] mx-auto px-8 space-y-6">
+            <div className="max-w-[1400px] w-full mx-auto px-8 flex flex-col gap-6 pb-8">
 
                 <DashboardStats stats={dashboardData.stats} />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 flex flex-col gap-6">
                         {/* System Status Card */}
-                        <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card p-6 border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
+                        <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl p-6 border border-gray-100 dark:border-gray-800 relative overflow-hidden group">
                             <div className="absolute right-0 top-0 w-64 h-full bg-gradient-to-l from-sage-light/50 to-transparent dark:from-sage-green/10 pointer-events-none"></div>
                             <div className="flex items-center justify-between relative z-10">
                                 <div className="flex items-center gap-4">
@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
 
                         {/* Action Cards */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card p-6 border border-gray-100 dark:border-gray-800 hover:border-sage-green/50 cursor-pointer group transition-all">
+                            <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl p-6 border border-gray-100 dark:border-gray-800 hover:border-primary/50 cursor-pointer group transition-all">
                                 <div className="size-12 rounded-xl bg-sage-light dark:bg-sage-green/20 flex items-center justify-center text-sage-green dark:text-sage-light mb-4 group-hover:scale-110 transition-transform">
                                     <span className="material-symbols-outlined">
                                         add_box
@@ -84,7 +84,7 @@ export default function AdminDashboardPage() {
                                     </span>
                                 </span>
                             </div>
-                            <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card p-6 border border-gray-100 dark:border-gray-800 hover:border-sage-green/50 cursor-pointer group transition-all">
+                            <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl p-6 border border-gray-100 dark:border-gray-800 hover:border-primary/50 cursor-pointer group transition-all">
                                 <div className="size-12 rounded-xl bg-accent-purple/50 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 dark:text-purple-300 mb-4 group-hover:scale-110 transition-transform">
                                     <span className="material-symbols-outlined">
                                         edit_document

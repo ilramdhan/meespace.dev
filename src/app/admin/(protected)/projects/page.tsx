@@ -62,7 +62,7 @@ export default function AdminProjectsPage() {
             </div>
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 px-5 py-2.5 bg-sage-green hover:bg-sage-dark text-white rounded-full text-sm font-medium shadow-sm transition-colors whitespace-nowrap cursor-pointer"
+                className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-text-main rounded-full text-sm font-bold shadow-sm transition-colors whitespace-nowrap cursor-pointer"
             >
                 <span className="material-symbols-outlined text-sm">add</span>
                 New Project
@@ -71,15 +71,15 @@ export default function AdminProjectsPage() {
     );
 
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
             <AdminPageHeader
                 title="Projects Management"
                 description="Manage and organize your portfolio case studies."
                 rightAction={RightAction}
             />
 
-            <div className="max-w-[1400px] mx-auto px-8">
-                <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col">
+            <div className="max-w-[1400px] w-full mx-auto px-8 pb-8">
+                <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col">
                     <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
                         <div className="flex items-center gap-4 text-sm">
                             <button className="font-medium text-sage-green border-b-2 border-sage-green px-1 py-2 cursor-pointer">

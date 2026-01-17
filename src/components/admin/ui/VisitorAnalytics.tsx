@@ -5,7 +5,7 @@ interface AnalyticsData {
 
 export function VisitorAnalytics({ data }: { data: AnalyticsData }) {
     return (
-        <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card p-6 border border-gray-100 dark:border-gray-800 flex-1">
+        <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl p-6 border border-gray-100 dark:border-gray-800 flex-1">
             <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-text-main dark:text-white">
                     Visitor Analytics
@@ -20,8 +20,8 @@ export function VisitorAnalytics({ data }: { data: AnalyticsData }) {
                     <div
                         key={idx}
                         className={`w-full rounded-t-lg transition-colors relative group ${val === 95
-                                ? "bg-sage-green shadow-lg hover:bg-sage-green/90"
-                                : "bg-sage-green/20 hover:bg-sage-green/40"
+                            ? "bg-sage-green shadow-lg hover:bg-sage-green/90"
+                            : "bg-sage-green/20 hover:bg-sage-green/40"
                             }`}
                         style={{ height: `${val}%` }}
                     >

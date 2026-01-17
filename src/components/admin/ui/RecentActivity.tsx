@@ -19,7 +19,7 @@ export function RecentActivity({ activity }: { activity: ActivityItem[] }) {
     };
 
     return (
-        <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-card p-6 h-full border border-gray-100 dark:border-gray-800 flex flex-col">
+        <div className="bento-card bg-white dark:bg-[#1e1e1e] rounded-xl p-6 h-full border border-gray-100 dark:border-gray-800 flex flex-col">
             <h3 className="font-bold text-text-main dark:text-white mb-6">
                 Recent Activity
             </h3>

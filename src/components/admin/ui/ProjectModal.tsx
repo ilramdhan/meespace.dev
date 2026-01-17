@@ -27,13 +27,13 @@ export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
         <>
             {/* Backdrop */}
             <div
-                className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
+                className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[60] transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"
                     }`}
                 onClick={onClose}
             ></div>
 
             {/* Modal */}
-            <div className="fixed inset-0 flex items-center justify-center z-50 p-4 pointer-events-none">
+            <div className="fixed inset-0 flex items-center justify-center z-[70] p-4 pointer-events-none">
                 <div
                     className={`bg-white dark:bg-[#1e1e1e] w-full max-w-2xl rounded-[24px] shadow-2xl border border-gray-100 dark:border-gray-700 flex flex-col max-h-[90vh] pointer-events-auto transition-all duration-200 transform ${isOpen
                         ? "opacity-100 scale-100"
@@ -193,7 +193,7 @@ export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
                         >
                             Cancel
                         </button>
-                        <button className="px-5 py-2.5 rounded-xl bg-sage-green hover:bg-sage-dark text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all focus:ring-2 focus:ring-sage-green focus:ring-offset-2 dark:focus:ring-offset-[#1e1e1e] cursor-pointer">
+                        <button className="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-dark text-text-main text-sm font-bold shadow-md hover:shadow-lg transition-all focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-[#1e1e1e] cursor-pointer">
                             Save Changes
                         </button>
                     </div>

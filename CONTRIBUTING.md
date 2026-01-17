@@ -195,6 +195,13 @@ export function BentoCard({ children, className }: BentoCardProps) {
 | `BentoCard` | `components/public/` | Card container for bento grid |
 | `ThemeToggle` | `components/shared/` | Light/dark mode switch |
 | `ThemeProvider` | `components/shared/` | Theme context wrapper |
+| `Button` | `components/shared/` | Primary/secondary/ghost buttons |
+| `Card` | `components/shared/` | Unified card with rounded-xl |
+| `PageHeader` | `components/shared/` | Page title and description |
+| `Badge` | `components/shared/` | Status badges with variants |
+| `Icon` | `components/shared/` | Material Symbols wrapper |
+
+> **Important**: For detailed UI guidelines including color usage, button patterns, and layout rules, see [docs/UI_GUIDELINES.md](./docs/UI_GUIDELINES.md).
 
 ---
 
