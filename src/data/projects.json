@@ -1,0 +1,26 @@
+[
+    {
+        "title": "E-commerce API Integration",
+        "year": "2023",
+        "description": "Facilitated the integration of a third-party payment gateway and inventory management system via RESTful APIs. Documented endpoints and data mapping.",
+        "tags": [
+            "PRD",
+            "UML",
+            "Agile"
+        ],
+        "icon": "shopping_cart",
+        "color": "primary"
+    },
+    {
+        "title": "Supply Chain Optimization",
+        "year": "2024",
+        "description": "Designed a new inventory tracking workflow to reduce shrinkage. Created AS-IS and TO-BE process maps and managed stakeholder UAT sessions.",
+        "tags": [
+            "BPMN",
+            "SQL",
+            "Jira"
+        ],
+        "icon": "local_shipping",
+        "color": "purple"
+    }
+]

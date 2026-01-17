@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Source paths for Tailwind to scan */
+@source "../components/**/*.{js,ts,jsx,tsx}";
+@source "./**/*.{js,ts,jsx,tsx}";
+
+/* Enable class-based dark mode for next-themes */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Custom colors for Tailwind v4 */
+  --color-primary: #d0e6dc;
+  --color-primary-dark: #b0c9be;
+  --color-accent-purple: #e6e6fa;
+  --color-background-light: #F5F5F7;
+  --color-background-dark: #161c19;
+  --color-text-main: #121715;
+  --color-text-muted: #658174;
+  --color-background: #F5F5F7;
+  --color-foreground: #121715;
+
+  /* Border radius */
+  --radius-lg: 1rem;
+  --radius-md: calc(1rem - 2px);
+  --radius-sm: calc(1rem - 4px);
+  --radius: 0.5rem;
+
+  /* Font family */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+*/
+@layer base {
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
   }
+}
+
+:root {
+  --background: #F5F5F7;
+  --foreground: #121715;
+  --primary: #d0e6dc;
+  --primary-dark: #b0c9be;
+  --accent-purple: #e6e6fa;
+  --text-main: #121715;
+  --text-muted: #658174;
+}
+
+.dark {
+  --background: #161c19;
+  --foreground: #ffffff;
+  --text-main: #ffffff;
+  --text-muted: #a3b5ae;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  transition: background-color 0.2s, color 0.2s;
 }

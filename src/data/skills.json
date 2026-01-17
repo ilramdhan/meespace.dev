@@ -1,0 +1,22 @@
+[
+    {
+        "icon": "hub",
+        "title": "System Analysis",
+        "desc": "Process Mapping, Gap Analysis, Technical Specs"
+    },
+    {
+        "icon": "schema",
+        "title": "UML Modeling",
+        "desc": "Sequence Diagrams, Activity Diagrams, ERD"
+    },
+    {
+        "icon": "view_kanban",
+        "title": "Agile/Scrum",
+        "desc": "User Stories, Backlog Grooming, Sprint Planning"
+    },
+    {
+        "icon": "database",
+        "title": "SQL & Data",
+        "desc": "Querying, Data Visualization, Tableau, PowerBI"
+    }
+]

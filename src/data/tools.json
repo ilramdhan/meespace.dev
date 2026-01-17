@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Jira",
+        "icon": "https://lh3.googleusercontent.com/aida-public/AB6AXuBxov94Jc3JNKo49epiAKP7Kb_dQB7Z9UDjqcsRDBsB6uSmYggA2-0XEYTHHVXaaYjLyk0Q10hYN7wUDKjBTKpE3mqqy3OoNvCuJ-y3E0NmLJn6_IY0y97PWJtXzj2QP-XEVFN1koHyvbiKtfUZo38J1WS9c7vHzhOZSvuT7_epCUJD4UeMDB2nTTujS0z7KoFGPhncDVyMI4-29ifaGEUoGOEqZkBXH9ztwAom5VV3jGnPL_ms1EzjL3jVuOReOnSaS0Ev51fMzakl",
+        "color": "blue"
+    },
+    {
+        "name": "Confluence",
+        "icon": "https://lh3.googleusercontent.com/aida-public/AB6AXuAcCMwLqrJWU_Xx0mpDSu9OTcsfTE-Y0SG6EOGE_BvVQcyD2tMWhWAho_63M3jT4ZgBC7TMdAJOlzWOy5yn00mmVoQ7N8ZaY8vxdUhU6HgC7vhb2UO7w1rQs2k0GP3gkHd4mqNzR8VyxeO47yLcez6A39CdIAmLfLy5rPHxTZ6IxR3QDz__4qYvdIPt8KlqVvt22O59h1rUFiSYrUY84fiDlDVoc36TmW2XhuNmDbhTE9jVhsR-e_5IG3wCNTNGb8KP-gvEpDHyyBKE",
+        "color": "blue"
+    },
+    {
+        "name": "SQL Server",
+        "icon": "https://lh3.googleusercontent.com/aida-public/AB6AXuBSHYafK5dVVoXkehW-8ceRtv7CyJZJT_QItY6Rx7wFrvA8e0CslOb7J3_uPTKGlDnzZknpVaRFEkOzM6CsFfvT8sHhMs5R21-WzApcbDn0yUqVEyQZGUh1KYDC4DEySLFCNtQv9Lv2SYJAPWiCr8uGwOumOuPjpitivFpoxNsVOdPm2Pb62_1zQ9xLpq6XMx6kzYsnmFejDKgxdYmQx2VXdGP_lwFZpyYNSi8V6CFgE8UlK_xp0oeuIesROTDFWzPn7Q-2gMMM1OHS",
+        "color": "red"
+    },
+    {
+        "name": "Figma",
+        "icon": "https://lh3.googleusercontent.com/aida-public/AB6AXuC8rPpOLCSaZzBWhohg15U8qd_0VAU9zNUEzkJBHbIqKYia7eVn6Y5opyKsw0sfhn_bNbDAgXsLRZxgni79sik9SHTfOHjulqcVTe97ZkzFcP0WhwNSe8GL9_3CRG_PtOgQ5L1pol2-_iCGownA5VFHkgk8FMCYA3ix-qzUJIRp7xOESN-b2m8xHhwV-FjQhoaKC26Wz-K-IE63xC4ihi34H6Zj7j6xwYd0thdeZs9vBtm9wr9upGfczowaQWOwkdnHmUcXITT_67kf",
+        "color": "purple"
+    },
+    {
+        "name": "Miro",
+        "icon": "https://lh3.googleusercontent.com/aida-public/AB6AXuA-QB5fIjXMdbLvA-fgXrcTehtyhiM2TIvw2qvrPiBwT_8Hi7VLjVQ5tGXQaUImjKHD5iqKrZFRZUE3AafS8yxcjde_3_bt-0tDw4mgOe_5ho-zA0LxUPpkkVrPVKCcnu_qtmMmu6KDNLHIrzDAs9pIvyuB68veU0TaQ9DMdgEB1x7vsIMtyxJIxtks0kmahme8HasYsJRNlpJpFrysPUoxwZpdXlgQOHncYsYYRKOzQtDQ5zG5UGGPrqRd0E2jv00aSUgMxt3dbUdZ",
+        "color": "yellow"
+    },
+    {
+        "name": "Tableau",
+        "icon": "https://lh3.googleusercontent.com/aida-public/AB6AXuA8xWlEMixaMUCIo5x6ur8eXXfFSds4MJHNKlJ6OzdxyRIRnb_6x96ZhMndLN3eU-8c0YPqqJavZSPN4_4yZLnaB0zxHsTLTRDZh0Ng2ug4ikniZGiKwVfahtWLb1XIloWsTfzgjiFf-IdTwLKVr8XVpGIfCyuHD2nuzYTpzZIlDkWZujL3oAUMNlBeUgq5-crFcnOHoJrDoh25QRNwCeuU6xowIcywacQwbnhNcLHBeng1AX_COv89JmkWxSwPC5sMas-3Ye5-tAsV",
+        "color": "blue"
+    }
+]

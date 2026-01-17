@@ -1,0 +1,23 @@
+[
+    {
+        "title": "The Art of Writing PRDs",
+        "excerpt": "Mastering Product Requirement Documents is crucial for any BSA. Learn the structure that keeps devs and stakeholders aligned.",
+        "readTime": "5 min read",
+        "icon": "article",
+        "color": "primary"
+    },
+    {
+        "title": "Bridging the Gap: Devs vs Stakeholders",
+        "excerpt": "Communication strategies to translate \"business speak\" into \"dev speak\" without losing requirements in translation.",
+        "readTime": "7 min read",
+        "icon": "groups",
+        "color": "purple"
+    },
+    {
+        "title": "Transitioning to Agile",
+        "excerpt": "Moving from Waterfall? Here are the top 5 challenges BSAs face during an Agile transformation and how to overcome them.",
+        "readTime": "6 min read",
+        "icon": "rocket_launch",
+        "color": "blue"
+    }
+]
