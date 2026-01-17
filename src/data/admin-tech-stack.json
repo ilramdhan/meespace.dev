@@ -1,0 +1,76 @@
+{
+    "techStack": [
+        {
+            "id": "1",
+            "name": "Jira",
+            "category": "Project Management",
+            "proficiency": "Expert",
+            "proficiencyValue": 95,
+            "icon": "check_circle",
+            "color": "blue"
+        },
+        {
+            "id": "2",
+            "name": "SQL",
+            "category": "Data Analysis",
+            "proficiency": "Advanced",
+            "proficiencyValue": 85,
+            "icon": "database",
+            "color": "orange"
+        },
+        {
+            "id": "3",
+            "name": "Figma",
+            "category": "Design & Prototyping",
+            "proficiency": "Intermediate",
+            "proficiencyValue": 60,
+            "icon": "design_services",
+            "color": "purple"
+        },
+        {
+            "id": "4",
+            "name": "Tableau",
+            "category": "Data Visualization",
+            "proficiency": "Advanced",
+            "proficiencyValue": 80,
+            "icon": "bar_chart",
+            "color": "blue"
+        },
+        {
+            "id": "5",
+            "name": "Python",
+            "category": "Scripting",
+            "proficiency": "Intermediate",
+            "proficiencyValue": 45,
+            "icon": "code",
+            "color": "yellow"
+        },
+        {
+            "id": "6",
+            "name": "Confluence",
+            "category": "Documentation",
+            "proficiency": "Expert",
+            "proficiencyValue": 95,
+            "icon": "article",
+            "color": "indigo"
+        },
+        {
+            "id": "7",
+            "name": "Excel",
+            "category": "Data Analysis",
+            "proficiency": "Expert",
+            "proficiencyValue": 100,
+            "icon": "table_chart",
+            "color": "green"
+        },
+        {
+            "id": "8",
+            "name": "Visio",
+            "category": "Diagramming",
+            "proficiency": "Advanced",
+            "proficiencyValue": 75,
+            "icon": "account_tree",
+            "color": "cyan"
+        }
+    ]
+}

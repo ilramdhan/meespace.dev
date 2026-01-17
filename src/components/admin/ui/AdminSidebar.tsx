@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
     { label: "Overview", icon: "dashboard", href: "/admin/dashboard" },
     { label: "Projects", icon: "folder_open", href: "/admin/projects" },
-    { label: "Blog/Insights", icon: "article", href: "/admin/insights" },
-    { label: "Experience", icon: "work_history", href: "/admin/experience" },
+    { label: "Blog/Insights", icon: "article", href: "/admin/blogs" },
+    { label: "Experience", icon: "work_history", href: "/admin/experiences" },
     { label: "Tech Stack", icon: "memory", href: "/admin/tech-stack" },
     { label: "Settings", icon: "settings", href: "/admin/settings" },
 ];
@@ -36,8 +36,8 @@ export function AdminSidebar() {
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-4 py-3 font-medium rounded-xl transition-colors group ${isActive
-                                    ? "bg-sage-light dark:bg-sage-green/20 text-sage-green dark:text-sage-light font-semibold"
-                                    : "text-text-muted dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-text-main dark:hover:text-white"
+                                ? "bg-sage-light dark:bg-sage-green/20 text-sage-green dark:text-sage-light font-semibold"
+                                : "text-text-muted dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-text-main dark:hover:text-white"
                                 }`}
                         >
                             <span className="material-symbols-outlined">

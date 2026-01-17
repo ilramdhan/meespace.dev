@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "title": "The Art of Writing PRDs",
+        "slug": "/art-of-writing-prds",
+        "category": "Product Mgmt",
+        "status": "Published",
+        "views": "1,245",
+        "date": "Oct 24, 2023",
+        "color": "blue"
+    },
+    {
+        "id": 2,
+        "title": "System Architecture Patterns",
+        "slug": "/system-architecture-patterns",
+        "category": "Engineering",
+        "status": "Published",
+        "views": "856",
+        "date": "Oct 15, 2023",
+        "color": "purple"
+    },
+    {
+        "id": 3,
+        "title": "Agile vs Waterfall Methodologies",
+        "slug": "/agile-vs-waterfall",
+        "category": "Process",
+        "status": "Draft",
+        "views": "—",
+        "date": "Last edited 2d ago",
+        "color": "orange"
+    },
+    {
+        "id": 4,
+        "title": "Stakeholder Management 101",
+        "slug": "/stakeholder-mgmt-101",
+        "category": "Soft Skills",
+        "status": "Published",
+        "views": "3,402",
+        "date": "Sep 12, 2023",
+        "color": "green"
+    },
+    {
+        "id": 5,
+        "title": "SQL Optimization Techniques",
+        "slug": "/sql-optimization",
+        "category": "Engineering",
+        "status": "Scheduled",
+        "views": "—",
+        "date": "Nov 01, 2023",
+        "color": "purple"
+    }
+]

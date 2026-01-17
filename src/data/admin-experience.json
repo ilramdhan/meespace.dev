@@ -1,0 +1,70 @@
+{
+    "experiences": [
+        {
+            "id": 1,
+            "title": "Senior Business Systems Analyst",
+            "company": "TechCorp Global",
+            "type": "Current",
+            "startDate": "Jan 2021",
+            "endDate": "Present",
+            "location": "San Francisco, CA (Hybrid)",
+            "description": "Leading the migration of legacy ERP systems to cloud-based solutions, conducting stakeholder interviews, and defining system requirements for cross-functional teams."
+        },
+        {
+            "id": 2,
+            "title": "Systems Analyst",
+            "company": "DataFlow Inc.",
+            "type": "Past",
+            "startDate": "Jun 2018",
+            "endDate": "Dec 2020",
+            "location": "Austin, TX",
+            "description": "Collaborated with development teams to implement new data processing pipelines."
+        },
+        {
+            "id": 3,
+            "title": "Junior Analyst",
+            "company": "Innovate Soft",
+            "type": "Past",
+            "startDate": "May 2016",
+            "endDate": "May 2018",
+            "location": "Remote",
+            "description": "Assisted in requirement gathering and system documentation."
+        }
+    ],
+    "education": [
+        {
+            "id": 1,
+            "degree": "Master of Information Systems",
+            "school": "State University",
+            "year": "2014 - 2016",
+            "gpa": "3.8"
+        },
+        {
+            "id": 2,
+            "degree": "Bachelor of Computer Science",
+            "school": "City College",
+            "year": "2010 - 2014",
+            "gpa": ""
+        }
+    ],
+    "certifications": [
+        {
+            "id": 1,
+            "name": "AWS Certified Solutions Architect",
+            "issuer": "Amazon Web Services",
+            "date": "Issued Dec 2022",
+            "expires": "Expires Dec 2025",
+            "credentialUrl": "https://aws.amazon.com/verification",
+            "fileUrl": "#"
+        },
+        {
+            "id": 2,
+            "name": "Certified Scrum Master (CSM)",
+            "issuer": "Scrum Alliance",
+            "date": "Issued Jun 2021",
+            "expires": "",
+            "credentialUrl": "https://scrumalliance.org/verification",
+            "fileUrl": "#"
+        }
+    ]
+}

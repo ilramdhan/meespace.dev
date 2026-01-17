@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-interface ProjectModalProps {
+interface BlogModalProps {
     isOpen: boolean;
     onClose: () => void;
-    initialData?: Record<string, unknown>; // Replace with proper type in real app
+    initialData?: Record<string, unknown>;
 }
 
-export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
+export function BlogModal({ isOpen, onClose }: BlogModalProps) {
     const [isVisible, setIsVisible] = useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,10 +43,10 @@ export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
                     <div className="px-8 py-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
                         <div>
                             <h2 className="text-xl font-bold text-text-main dark:text-white">
-                                Edit Project
+                                Edit Article
                             </h2>
                             <p className="text-sm text-text-muted dark:text-gray-400 mt-1">
-                                E-commerce API Integration
+                                The Art of Writing PRDs
                             </p>
                         </div>
                         <button
@@ -64,31 +64,38 @@ export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
                             <div>
                                 <label
                                     className="block text-sm font-semibold text-text-main dark:text-gray-300 mb-2"
-                                    htmlFor="project-title"
+                                    htmlFor="article-title"
                                 >
-                                    Project Title
+                                    Article Title
                                 </label>
                                 <input
                                     className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white focus:ring-sage-green focus:border-sage-green py-3 px-4 shadow-sm text-sm"
-                                    id="project-title"
+                                    id="article-title"
                                     type="text"
-                                    defaultValue="E-commerce API Integration"
+                                    defaultValue="The Art of Writing PRDs"
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-6">
                                 <div>
                                     <label
                                         className="block text-sm font-semibold text-text-main dark:text-gray-300 mb-2"
-                                        htmlFor="year"
+                                        htmlFor="category"
                                     >
-                                        Year
+                                        Category
                                     </label>
-                                    <input
+                                    <select
                                         className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white focus:ring-sage-green focus:border-sage-green py-3 px-4 shadow-sm text-sm"
-                                        id="year"
-                                        type="number"
-                                        defaultValue="2023"
-                                    />
+                                        id="category"
+                                        defaultValue="product-mgmt"
+                                    >
+                                        <option value="product-mgmt">
+                                            Product Mgmt
+                                        </option>
+                                        <option value="engineering">Engineering</option>
+                                        <option value="design">Design</option>
+                                        <option value="process">Process</option>
+                                        <option value="soft-skills">Soft Skills</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label
@@ -106,6 +113,9 @@ export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
                                             Published
                                         </option>
                                         <option value="draft">Draft</option>
+                                        <option value="scheduled">
+                                            Scheduled
+                                        </option>
                                         <option value="archived">
                                             Archived
                                         </option>
@@ -115,59 +125,34 @@ export function ProjectModal({ isOpen, onClose }: ProjectModalProps) {
                             <div>
                                 <label
                                     className="block text-sm font-semibold text-text-main dark:text-gray-300 mb-2"
-                                    htmlFor="tags"
+                                    htmlFor="slug"
                                 >
-                                    Tags
+                                    Slug
                                 </label>
-                                <div className="relative">
-                                    <div className="flex flex-wrap gap-2 p-2 w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 min-h-[50px] items-center">
-                                        <span className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main dark:text-white text-xs font-medium px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
-                                            PRD
-                                            <button
-                                                className="hover:text-red-500 cursor-pointer"
-                                                type="button"
-                                            >
-                                                <span className="material-symbols-outlined text-[14px]">
-                                                    close
-                                                </span>
-                                            </button>
-                                        </span>
-                                        <span className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-text-main dark:text-white text-xs font-medium px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
-                                            UML
-                                            <button
-                                                className="hover:text-red-500 cursor-pointer"
-                                                type="button"
-                                            >
-                                                <span className="material-symbols-outlined text-[14px]">
-                                                    close
-                                                </span>
-                                            </button>
-                                        </span>
-                                        <input
-                                            className="bg-transparent border-none text-sm focus:ring-0 p-1 placeholder-gray-400 w-24 outline-none"
-                                            placeholder="Add tag..."
-                                            type="text"
-                                        />
-                                    </div>
-                                </div>
+                                <input
+                                    className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white focus:ring-sage-green focus:border-sage-green py-3 px-4 shadow-sm text-sm"
+                                    id="slug"
+                                    type="text"
+                                    defaultValue="/art-of-writing-prds"
+                                />
                             </div>
                             <div>
                                 <label
                                     className="block text-sm font-semibold text-text-main dark:text-gray-300 mb-2"
-                                    htmlFor="description"
+                                    htmlFor="content-preview"
                                 >
-                                    Description
+                                    Content Preview
                                 </label>
                                 <textarea
                                     className="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-text-main dark:text-white focus:ring-sage-green focus:border-sage-green py-3 px-4 shadow-sm text-sm resize-none"
-                                    id="description"
+                                    id="content-preview"
                                     rows={4}
-                                    defaultValue="Facilitated the integration of a third-party payment gateway and inventory management system via RESTful APIs. Documented endpoints and data mapping."
+                                    defaultValue="A Product Requirement Document (PRD) is the heart of any product development process. It serves as a single source of truth..."
                                 ></textarea>
                             </div>
                             <div>
                                 <label className="block text-sm font-semibold text-text-main dark:text-gray-300 mb-2">
-                                    Thumbnail
+                                    Cover Image
                                 </label>
                                 <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer group">
                                     <div className="size-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
