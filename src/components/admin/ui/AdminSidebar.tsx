@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { createBrowserClient } from '@supabase/ssr';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const NAV_ITEMS = [
     { label: "Overview", icon: "dashboard", href: "/admin/dashboard" },
@@ -14,6 +17,24 @@ const NAV_ITEMS = [
 
 export function AdminSidebar() {
     const pathname = usePathname();
+    const router = useRouter();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+    const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const handleLogout = async () => {
+        setIsLoggingOut(true);
+        try {
+            await supabase.auth.signOut();
+            router.push('/admin/login?error=signout_success');
+        } catch (error) {
+            console.error('Logout error:', error);
+            router.push('/admin/login');
+        }
+    };
 
     return (
         <aside className="w-64 bg-white dark:bg-[#1e1e1e] border-r border-gray-200 dark:border-gray-800 flex flex-col h-full shrink-0">
@@ -24,7 +45,7 @@ export function AdminSidebar() {
                     </span>
                 </div>
                 <h1 className="text-text-main dark:text-white text-lg font-bold tracking-tight">
-                    SJ Admin
+                    Admin Panel
                 </h1>
             </div>
 
@@ -52,25 +73,28 @@ export function AdminSidebar() {
             <div className="p-4 border-t border-gray-100 dark:border-gray-800">
                 <div className="bg-primary/20 dark:bg-primary/10 rounded-xl p-4 flex items-center gap-3">
                     <div className="size-8 rounded-full overflow-hidden bg-gray-200 text-xs flex items-center justify-center font-bold text-gray-500">
-                        SJ
-                        {/* <img alt="Sarah Jenkins" className="w-full h-full object-cover" src="..." /> */}
+                        A
                     </div>
-                    <div className="flex flex-col overflow-hidden">
+                    <div className="flex flex-col overflow-hidden flex-1">
                         <span className="text-sm font-bold text-text-main dark:text-white truncate">
-                            Sarah Jenkins
-                        </span>
-                        <span className="text-xs text-text-muted dark:text-gray-400 truncate">
                             Admin
                         </span>
-                    </div>
-                    <Link
-                        href="/admin/login"
-                        className="ml-auto text-text-muted hover:text-text-main"
-                    >
-                        <span className="material-symbols-outlined text-lg">
-                            logout
+                        <span className="text-xs text-text-muted dark:text-gray-400 truncate">
+                            Super Admin
                         </span>
-                    </Link>
+                    </div>
+                    <button
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="ml-auto text-text-muted hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50"
+                        title="Sign out"
+                    >
+                        {isLoggingOut ? (
+                            <span className="material-symbols-outlined text-lg animate-spin">progress_activity</span>
+                        ) : (
+                            <span className="material-symbols-outlined text-lg">logout</span>
+                        )}
+                    </button>
                 </div>
             </div>
         </aside>

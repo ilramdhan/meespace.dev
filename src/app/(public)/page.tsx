@@ -11,30 +11,110 @@ import {
   Send,
 } from "lucide-react";
 
-// Mock Data Imports
-import profile from "@/data/profile.json";
-import stats from "@/data/stats.json";
-import tools from "@/data/tools.json";
-import skills from "@/data/skills.json";
-import projects from "@/data/projects.json";
-import posts from "@/data/posts.json";
+// API fetch functions for server-side rendering
+async function getProfile() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/v1/profile`, { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.data;
+  } catch {
+    return null;
+  }
+}
 
-export const metadata: Metadata = {
-  title: `${profile.name} - ${profile.role}`,
-  description: profile.bio,
-  openGraph: {
-    images: [
-      {
-        url: profile.avatar,
-        width: 800,
-        height: 800,
-        alt: profile.name,
-      },
-    ],
-  },
+async function getProjects() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/v1/projects?status=published&limit=4`, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data?.projects || [];
+  } catch {
+    return [];
+  }
+}
+
+async function getTechStack() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/v1/tech-stack`, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data?.techStack?.slice(0, 6) || [];
+  } catch {
+    return [];
+  }
+}
+
+async function getBlogPosts() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/v1/blog?status=published&limit=3`, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data?.posts || [];
+  } catch {
+    return [];
+  }
+}
+
+async function getSkills() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/v1/skills`, { next: { revalidate: 60 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.data || [];
+  } catch {
+    return [];
+  }
+}
+
+// Default profile for fallback
+const defaultProfile = {
+  name: "Your Name",
+  role: "Your Role",
+  status: "Available for hire",
+  tagline: "Welcome to my portfolio",
+  bio: "Add your bio in the admin settings.",
+  avatar: "/placeholder-avatar.png",
+  email: "email@example.com",
+  location: "Your Location",
+  linkedin_url: "#",
+  github_url: "#",
 };
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Portfolio",
+  description: "Personal portfolio website",
+};
+
+export default async function Home() {
+  const [profile, projects, techStack, posts, skills] = await Promise.all([
+    getProfile(),
+    getProjects(),
+    getTechStack(),
+    getBlogPosts(),
+    getSkills(),
+  ]);
+
+  const p = profile || defaultProfile;
+
+  // Ensure arrays are not null/undefined
+  const projectsArr = projects || [];
+  const skillsArr = skills || [];
+  const techStackArr = techStack || [];
+  const postsArr = posts || [];
+
+  // Default stats if no data
+  const stats = [
+    { value: String(projectsArr.length), label: "Projects", icon: "folder_open", color: "blue" },
+    { value: String(skillsArr.length), label: "Skills", icon: "psychology", color: "purple" },
+    { value: String(techStackArr.length), label: "Technologies", icon: "code", color: "green" },
+  ];
+
   return (
     <div className="space-y-8">
       {/* About Section Grid */}
@@ -47,13 +127,13 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
               </span>
-              {profile.status}
+              {p.status || "Available"}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-text-main dark:text-white leading-tight mb-4">
-              {profile.tagline}
+              {p.tagline || p.name}
             </h2>
             <p className="text-text-muted dark:text-gray-400 text-base md:text-lg leading-relaxed max-w-md">
-              {profile.bio}
+              {p.short_bio || p.bio || "Welcome to my portfolio"}
             </p>
           </div>
           <div className="mt-8 flex items-end justify-between relative z-10">
@@ -62,17 +142,23 @@ export default function Home() {
                 Role
               </span>
               <span className="text-lg font-semibold text-text-main dark:text-white">
-                {profile.role}
+                {p.title || p.role}
               </span>
             </div>
-            <div className="size-20 md:size-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg relative">
-              <Image
-                src={profile.avatar}
-                alt={profile.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 80px, 96px"
-              />
+            <div className="size-20 md:size-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg relative bg-gray-200 dark:bg-gray-700">
+              {p.avatar_url || p.avatar ? (
+                <Image
+                  src={p.avatar_url || p.avatar}
+                  alt={p.full_name || p.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 80px, 96px"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  <span className="material-symbols-outlined text-4xl">person</span>
+                </div>
+              )}
             </div>
           </div>
           <div className="absolute -right-10 -top-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-all duration-500"></div>
@@ -81,7 +167,7 @@ export default function Home() {
         {/* Stats */}
         {stats.map((stat, i) => (
           <BentoCard key={i} className="col-span-1 p-6 flex flex-col justify-center gap-2">
-            <div className={`size-10 rounded-full bg-${stat.color}-50 dark:bg-${stat.color}-900/30 flex items-center justify-center text-${stat.color}-600 dark:text-${stat.color}-300 mb-2`}>
+            <div className={`size-10 rounded-full ${stat.color === 'blue' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300' : stat.color === 'purple' ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300' : 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-300'} flex items-center justify-center mb-2`}>
               <span className="material-symbols-outlined font-icon">{stat.icon}</span>
             </div>
             <span className="text-4xl font-bold text-text-main dark:text-white tracking-tighter">
@@ -110,117 +196,114 @@ export default function Home() {
         </BentoCard>
 
         {/* Tools Grid */}
-        <div className="col-span-1 md:col-span-4 mt-2">
-          <h3 className="text-lg font-bold text-text-main dark:text-white mb-4 pl-1">
-            Tools & Technologies
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-            {tools.map((tool) => (
-              <BentoCard
-                key={tool.name}
-                className="p-4 flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors"
-              >
-                <div className="w-8 h-8 relative">
-                  <img src={tool.icon} alt={tool.name} className="w-full h-full object-contain" />
-                </div>
-                <span className="text-xs font-semibold text-text-muted dark:text-gray-400">
-                  {tool.name}
-                </span>
-              </BentoCard>
-            ))}
+        {techStackArr.length > 0 && (
+          <div className="col-span-1 md:col-span-4 mt-2">
+            <h3 className="text-lg font-bold text-text-main dark:text-white mb-4 pl-1">
+              Tools & Technologies
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+              {techStackArr.map((tool: { id: string; name: string; icon: string; color: string }) => (
+                <BentoCard
+                  key={tool.id}
+                  className="p-4 flex flex-col items-center justify-center gap-2 hover:bg-muted/50 transition-colors"
+                >
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${tool.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' : tool.color === 'purple' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600' : tool.color === 'green' ? 'bg-green-100 dark:bg-green-900/30 text-green-600' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'}`}>
+                    <span className="material-symbols-outlined">{tool.icon}</span>
+                  </div>
+                  <span className="text-xs font-semibold text-text-muted dark:text-gray-400">
+                    {tool.name}
+                  </span>
+                </BentoCard>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Core Expertise */}
-        <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4">
-          <h3 className="text-xl font-bold text-text-main dark:text-white">
-            Core Expertise
-          </h3>
-          <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
-        </div>
+        {skillsArr.length > 0 && (
+          <>
+            <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4">
+              <h3 className="text-xl font-bold text-text-main dark:text-white">
+                Core Expertise
+              </h3>
+              <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
+            </div>
 
-        {skills.map((skill) => (
-          <BentoCard key={skill.title} className="col-span-1 p-5 flex flex-col gap-3">
-            <div className="size-10 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-text-main dark:text-white">
-              <span className="material-symbols-outlined font-icon">{skill.icon}</span>
-            </div>
-            <div>
-              <h4 className="font-bold text-text-main dark:text-white">{skill.title}</h4>
-              <p className="text-xs text-text-muted dark:text-gray-400 mt-1">{skill.desc}</p>
-            </div>
-          </BentoCard>
-        ))}
+            {skillsArr.slice(0, 4).map((skill: { id: string; name: string; description: string; icon: string }) => (
+              <BentoCard key={skill.id} className="col-span-1 p-5 flex flex-col gap-3">
+                <div className="size-10 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-text-main dark:text-white">
+                  <span className="material-symbols-outlined font-icon">{skill.icon || 'star'}</span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-text-main dark:text-white">{skill.name}</h4>
+                  <p className="text-xs text-text-muted dark:text-gray-400 mt-1">{skill.description}</p>
+                </div>
+              </BentoCard>
+            ))}
+          </>
+        )}
 
         {/* Featured Projects */}
-        <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4" id="projects">
-          <h3 className="text-xl font-bold text-text-main dark:text-white">Featured Projects</h3>
-          <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
-        </div>
+        {projectsArr.length > 0 && (
+          <>
+            <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4" id="projects">
+              <h3 className="text-xl font-bold text-text-main dark:text-white">Featured Projects</h3>
+              <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
+              <Link href="/projects" className="text-sm font-semibold text-primary-dark hover:text-text-main transition-colors">View All</Link>
+            </div>
 
-        {projects.map((project, i) => (
-          <BentoCard key={i} className="col-span-1 md:col-span-2 p-6 flex flex-col justify-between group">
-            <div className="flex items-start justify-between mb-4">
-              <div className={`size-12 rounded-lg bg-${project.color === "primary" ? "primary" : "accent-purple"}/20 ${project.color === "primary" ? "" : "bg-opacity-50"} flex items-center justify-center ${project.color === "primary" ? "text-text-main" : "text-purple-900 dark:text-purple-200"}`}>
-                <span className="material-symbols-outlined font-icon">{project.icon}</span>
-              </div>
-              <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-xs font-semibold rounded-full text-gray-500">{project.year}</div>
-            </div>
-            <div>
-              <h3 className={`text-xl font-bold text-text-main dark:text-white mb-2 group-hover:text-${project.color === "primary" ? "primary-dark" : "purple-700"} dark:group-hover:text-${project.color === "primary" ? "primary-dark" : "purple-300"} transition-colors`}>{project.title}</h3>
-              <p className="text-text-muted dark:text-gray-400 text-sm mb-4 leading-relaxed">
-                {project.description}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map(tag => (
-                  <span key={tag} className="px-2 py-1 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded text-xs text-gray-600 dark:text-gray-300 font-medium">{tag}</span>
-                ))}
-              </div>
-            </div>
-          </BentoCard>
-        ))}
+            {projectsArr.slice(0, 4).map((project: { id: string; title: string; subtitle: string; slug: string; icon: string; icon_color: string; category: string }) => (
+              <BentoCard key={project.id} className="col-span-1 md:col-span-2 p-6 flex flex-col justify-between group">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`size-12 rounded-lg ${project.icon_color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600' : project.icon_color === 'purple' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600' : 'bg-primary/20 text-text-main'} flex items-center justify-center`}>
+                    <span className="material-symbols-outlined font-icon">{project.icon || 'folder'}</span>
+                  </div>
+                  <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-xs font-semibold rounded-full text-gray-500">{project.category}</div>
+                </div>
+                <div>
+                  <Link href={`/projects/${project.slug}`}>
+                    <h3 className="text-xl font-bold text-text-main dark:text-white mb-2 group-hover:text-primary-dark transition-colors">{project.title}</h3>
+                  </Link>
+                  <p className="text-text-muted dark:text-gray-400 text-sm mb-4 leading-relaxed">
+                    {project.subtitle}
+                  </p>
+                </div>
+              </BentoCard>
+            ))}
+          </>
+        )}
 
         {/* Latest Insights */}
-        <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4" id="blog">
-          <h3 className="text-xl font-bold text-text-main dark:text-white">Latest Insights</h3>
-          <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
-          <Link href="#" className="text-sm font-semibold text-primary-dark hover:text-text-main transition-colors">View All</Link>
-        </div>
+        {postsArr.length > 0 && (
+          <>
+            <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4" id="blog">
+              <h3 className="text-xl font-bold text-text-main dark:text-white">Latest Insights</h3>
+              <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
+              <Link href="/insights" className="text-sm font-semibold text-primary-dark hover:text-text-main transition-colors">View All</Link>
+            </div>
 
-        {posts.map((post, i) => {
-          // Grid logic: 3 items. 1st: col-span-1 md:col-span-1 lg:col-span-4/3. 2nd: same. 3rd: col-span-1 md:col-span-2 ...
-          let gridClass = "col-span-1 md:col-span-1 lg:col-span-4/3";
-          if (i === 2) gridClass = "col-span-1 md:col-span-2 md:col-start-2 lg:col-span-1 lg:col-start-auto";
-
-          let iconColorText = "text-primary-dark";
-          let groupHoverText = "group-hover:text-primary-dark";
-
-          if (post.color === "purple") {
-            iconColorText = "text-purple-300";
-            groupHoverText = "group-hover:text-purple-600";
-          } else if (post.color === "blue") {
-            iconColorText = "text-blue-300";
-            groupHoverText = "group-hover:text-blue-600";
-          }
-
-          return (
-            <BentoCard key={i} className={`${gridClass} flex flex-col h-full !p-0`}>
-              <div className={`h-40 bg-gray-100 dark:bg-gray-800 relative overflow-hidden`}>
-                <div className={`absolute inset-0 bg-${post.color === "primary" ? "primary" : (post.color === "purple" ? "accent-purple" : "blue-100")}/${post.color === "blue" ? "50" : "20"} group-hover:bg-${post.color === "primary" ? "primary" : post.color === "purple" ? "accent-purple" : "blue-100"}/${post.color === "blue" ? "70" : "30"} transition-colors`}></div>
-                <div className={`absolute inset-0 flex items-center justify-center ${iconColorText} opacity-${post.color === "primary" ? "30" : "50"}`}>
-                  <span className="material-symbols-outlined text-6xl font-icon">{post.icon}</span>
+            {postsArr.slice(0, 3).map((post: { id: string; title: string; excerpt: string; slug: string; reading_time: number }) => (
+              <BentoCard key={post.id} className="col-span-1 flex flex-col h-full !p-0">
+                <div className="h-32 bg-gray-100 dark:bg-gray-800 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/20"></div>
+                  <div className="absolute inset-0 flex items-center justify-center text-primary-dark opacity-30">
+                    <span className="material-symbols-outlined text-5xl font-icon">article</span>
+                  </div>
                 </div>
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <h4 className={`font-bold text-lg text-text-main dark:text-white mb-2 leading-snug ${groupHoverText} transition-colors`}>{post.title}</h4>
-                <p className="text-sm text-text-muted dark:text-gray-400 mb-4 line-clamp-3">{post.excerpt}</p>
-                <div className="mt-auto flex items-center justify-between text-xs text-gray-500">
-                  <span>{post.readTime}</span>
-                  <span className="font-medium text-text-main dark:text-white">Read More →</span>
+                <div className="p-5 flex flex-col flex-1">
+                  <Link href={`/insights/${post.slug}`}>
+                    <h4 className="font-bold text-lg text-text-main dark:text-white mb-2 leading-snug group-hover:text-primary-dark transition-colors">{post.title}</h4>
+                  </Link>
+                  <p className="text-sm text-text-muted dark:text-gray-400 mb-4 line-clamp-3">{post.excerpt}</p>
+                  <div className="mt-auto flex items-center justify-between text-xs text-gray-500">
+                    <span>{post.reading_time || 5} min read</span>
+                    <Link href={`/insights/${post.slug}`} className="font-medium text-text-main dark:text-white">Read More →</Link>
+                  </div>
                 </div>
-              </div>
-            </BentoCard>
-          );
-        })}
+              </BentoCard>
+            ))}
+          </>
+        )}
 
         {/* Contact Section */}
         <div className="col-span-1 md:col-span-4 mt-8" id="contact">
@@ -228,31 +311,35 @@ export default function Home() {
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/40 dark:bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
               <div className="flex flex-col justify-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-text-main dark:text-white mb-4">Let&apos;s collaborate on your next system migration</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-text-main dark:text-white mb-4">Let&apos;s work together</h2>
                 <p className="text-text-muted dark:text-gray-300 mb-8 text-lg">
-                  Whether you need help with requirements gathering, process optimization, or technical documentation, I&apos;m just a message away.
+                  I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
                 </p>
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-3 text-text-main dark:text-white">
                     <div className="size-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center shadow-sm">
                       <Mail className="w-5 h-5" />
                     </div>
-                    <span className="font-medium">{profile.email}</span>
+                    <span className="font-medium">{p.email}</span>
                   </div>
                   <div className="flex items-center gap-3 text-text-main dark:text-white">
                     <div className="size-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center shadow-sm">
                       <MapPin className="w-5 h-5" />
                     </div>
-                    <span className="font-medium">{profile.location}</span>
+                    <span className="font-medium">{p.location || "Remote"}</span>
                   </div>
                 </div>
                 <div className="flex gap-4 mt-8">
-                  <a href={profile.socials.linkedin} className="size-12 bg-white dark:bg-white/10 rounded-full flex items-center justify-center text-text-main dark:text-white hover:scale-110 transition-transform shadow-sm">
-                    <Linkedin className="w-5 h-5" />
-                  </a>
-                  <a href={profile.socials.github} className="size-12 bg-white dark:bg-white/10 rounded-full flex items-center justify-center text-text-main dark:text-white hover:scale-110 transition-transform shadow-sm">
-                    <Github className="w-5 h-5" />
-                  </a>
+                  {(p.linkedin_url || p.socials?.linkedin) && (
+                    <a href={p.linkedin_url || p.socials?.linkedin} target="_blank" rel="noopener noreferrer" className="size-12 bg-white dark:bg-white/10 rounded-full flex items-center justify-center text-text-main dark:text-white hover:scale-110 transition-transform shadow-sm">
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                  )}
+                  {(p.github_url || p.socials?.github) && (
+                    <a href={p.github_url || p.socials?.github} target="_blank" rel="noopener noreferrer" className="size-12 bg-white dark:bg-white/10 rounded-full flex items-center justify-center text-text-main dark:text-white hover:scale-110 transition-transform shadow-sm">
+                      <Github className="w-5 h-5" />
+                    </a>
+                  )}
                 </div>
               </div>
 
