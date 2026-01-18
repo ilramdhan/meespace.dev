@@ -16,11 +16,11 @@ export async function GET(request: NextRequest) {
             const supabase = await createClient();
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const { data, error } = await (supabase as any)
+            const { data, error } = await (supabase as any)
                 .from('profile')
                 .select('*')
                 .limit(1)
-                .single();
+                .maybeSingle();
 
             if (error) {
                 return errorResponse('Profile not found', 404, rateLimitInfo);
@@ -52,12 +52,12 @@ export async function PUT(request: NextRequest) {
                     .from('profile')
                     .select('id')
                     .limit(1)
-                    .single();
+                    .maybeSingle();
 
                 if (!existingProfile) {
                     // Create new profile if doesn't exist
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const { data, error } = await (supabase as any)
+                    const { data, error } = await (supabase as any)
                         .from('profile')
                         .insert(body)
                         .select()

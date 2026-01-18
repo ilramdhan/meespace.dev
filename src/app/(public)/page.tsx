@@ -72,6 +72,18 @@ async function getSkills() {
   }
 }
 
+async function getSettings() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/v1/settings`, { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.data;
+  } catch {
+    return null;
+  }
+}
+
 // Default profile for fallback
 const defaultProfile = {
   name: "Your Name",
@@ -92,15 +104,17 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [profile, projects, techStack, posts, skills] = await Promise.all([
+  const [profile, projects, techStack, posts, skills, settings] = await Promise.all([
     getProfile(),
     getProjects(),
     getTechStack(),
     getBlogPosts(),
     getSkills(),
+    getSettings(),
   ]);
 
   const p = profile || defaultProfile;
+  const s = settings || {};
 
   // Ensure arrays are not null/undefined
   const projectsArr = projects || [];
@@ -320,13 +334,13 @@ export default async function Home() {
                     <div className="size-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center shadow-sm">
                       <Mail className="w-5 h-5" />
                     </div>
-                    <span className="font-medium">{p.email}</span>
+                    <span className="font-medium">{s.contact_email || p.email}</span>
                   </div>
                   <div className="flex items-center gap-3 text-text-main dark:text-white">
                     <div className="size-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center shadow-sm">
                       <MapPin className="w-5 h-5" />
                     </div>
-                    <span className="font-medium">{p.location || "Remote"}</span>
+                    <span className="font-medium">{s.location || p.location || "Remote"}</span>
                   </div>
                 </div>
                 <div className="flex gap-4 mt-8">

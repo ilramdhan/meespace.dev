@@ -11,35 +11,46 @@ const inter = Inter({
   display: "swap",
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  metadataBase: new URL(baseUrl),
   title: {
-    default: 'Sarah Jenkins | Senior Business System Analyst',
-    template: '%s | Sarah Jenkins',
+    default: 'Meyspace | Portfolio',
+    template: '%s | Meyspace',
   },
-  description: 'Senior Business System Analyst bridging business needs with technical solutions. Expert in PRDs, UML, and Agile transformations.',
-  keywords: ['Business System Analyst', 'Product Management', 'Agile', 'FinTech', 'SaaS', 'PRD', 'UML'],
-  authors: [{ name: 'Sarah Jenkins' }],
-  creator: 'Sarah Jenkins',
+  description: 'Personal portfolio website showcasing projects, insights, and professional experience.',
+  keywords: ['Portfolio', 'Developer', 'Designer', 'Projects', 'Blog', 'Insights'],
+  authors: [{ name: 'Meyspace' }],
+  creator: 'Meyspace',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: '/',
-    siteName: 'Sarah Jenkins Portfolio',
-    title: 'Sarah Jenkins | Senior Business System Analyst',
-    description: 'Bridging Business Needs with Technical Solutions',
+    url: baseUrl,
+    siteName: 'Meyspace',
+    title: 'Meyspace | Portfolio',
+    description: 'Personal portfolio website showcasing projects, insights, and professional experience.',
     images: [
       {
-        url: '/og-image.jpg', // Placeholder for public/og-image.jpg
+        url: `${baseUrl}/og-image.svg`,
         width: 1200,
         height: 630,
-        alt: 'Sarah Jenkins Portfolio',
+        alt: 'Meyspace Portfolio',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@sarahjenkins',
+    title: 'Meyspace | Portfolio',
+    description: 'Personal portfolio website showcasing projects, insights, and professional experience.',
+    images: [`${baseUrl}/og-image.svg`],
   },
   robots: {
     index: true,
@@ -80,4 +91,3 @@ export default function RootLayout({
     </html>
   );
 }
-

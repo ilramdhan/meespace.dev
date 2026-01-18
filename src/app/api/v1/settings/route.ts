@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
                 .from('site_settings')
                 .select('*')
                 .limit(1)
-                .single();
+                .maybeSingle();
 
             if (error || !data) {
                 // Return default settings if none exist
@@ -58,7 +58,7 @@ export async function PUT(request: NextRequest) {
                     .from('site_settings')
                     .select('id')
                     .limit(1)
-                    .single();
+                    .maybeSingle();
 
                 if (!existingSettings) {
                     // Create new settings if doesn't exist
