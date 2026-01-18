@@ -4,6 +4,13 @@ import { useState, useEffect, useCallback } from "react";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { useToast } from "@/components/shared/Toast";
 import { apiCall } from "@/hooks/useApi";
+import { ImageUpload } from "@/components/shared/ImageUpload";
+
+interface SocialLinks {
+    linkedin?: string;
+    github?: string;
+    twitter?: string;
+}
 
 interface HomeContent {
     // Hero section (from profile)
@@ -14,6 +21,8 @@ interface HomeContent {
     short_bio: string;
     status: string;
     avatar_url: string;
+    resume_url: string;
+    social_links: SocialLinks;
 
     // Site settings
     site_name: string;
@@ -36,6 +45,8 @@ export default function AdminHomePage() {
         short_bio: '',
         status: '',
         avatar_url: '',
+        resume_url: '',
+        social_links: {},
         site_name: '',
         site_tagline: '',
         footer_text: '',
@@ -53,10 +64,29 @@ export default function AdminHomePage() {
         setIsLoading(true);
 
         // Fetch profile
-        const profileRes = await apiCall<{ id: string; full_name: string; role: string; tagline: string; bio: string; short_bio: string; status: string; avatar_url: string }>('/api/v1/profile');
+        const profileRes = await apiCall<{
+            id: string;
+            full_name: string;
+            role: string;
+            tagline: string;
+            bio: string;
+            short_bio: string;
+            status: string;
+            avatar_url: string;
+            resume_url: string;
+            social_links: SocialLinks;
+        }>('/api/v1/profile');
 
         // Fetch settings
-        const settingsRes = await apiCall<{ site_name: string; site_tagline: string; footer_text: string; copyright_text: string; contact_email: string; contact_phone: string; location: string }>('/api/v1/settings');
+        const settingsRes = await apiCall<{
+            site_name: string;
+            site_tagline: string;
+            footer_text: string;
+            copyright_text: string;
+            contact_email: string;
+            contact_phone: string;
+            location: string
+        }>('/api/v1/settings');
 
         if (profileRes.success && profileRes.data) {
             setFormData(prev => ({
@@ -68,6 +98,8 @@ export default function AdminHomePage() {
                 short_bio: profileRes.data?.short_bio || '',
                 status: profileRes.data?.status || '',
                 avatar_url: profileRes.data?.avatar_url || '',
+                resume_url: profileRes.data?.resume_url || '',
+                social_links: profileRes.data?.social_links || {},
             }));
         }
 
@@ -97,20 +129,23 @@ export default function AdminHomePage() {
         // Update profile (hero section)
         const profileRes = await apiCall('/api/v1/profile', {
             method: 'PUT',
-            body: JSON.stringify({
+            body: {
                 full_name: formData.full_name,
                 role: formData.role,
                 tagline: formData.tagline,
                 bio: formData.bio,
                 short_bio: formData.short_bio,
                 status: formData.status,
-            }),
+                avatar_url: formData.avatar_url,
+                resume_url: formData.resume_url,
+                social_links: formData.social_links,
+            },
         });
 
         // Update settings (footer section)
         const settingsRes = await apiCall('/api/v1/settings', {
             method: 'PUT',
-            body: JSON.stringify({
+            body: {
                 site_name: formData.site_name,
                 site_tagline: formData.site_tagline,
                 footer_text: formData.footer_text,
@@ -118,7 +153,7 @@ export default function AdminHomePage() {
                 contact_email: formData.contact_email,
                 contact_phone: formData.contact_phone,
                 location: formData.location,
-            }),
+            },
         });
 
         setIsSaving(false);
@@ -128,6 +163,16 @@ export default function AdminHomePage() {
         } else {
             showToast(profileRes.error || settingsRes.error || 'Failed to save content', 'error');
         }
+    };
+
+    const updateSocialLink = (key: keyof SocialLinks, value: string) => {
+        setFormData(prev => ({
+            ...prev,
+            social_links: {
+                ...prev.social_links,
+                [key]: value,
+            },
+        }));
     };
 
     const RightAction = (
@@ -177,8 +222,8 @@ export default function AdminHomePage() {
                         <button
                             onClick={() => setActiveTab('hero')}
                             className={`flex items-center gap-2 font-medium px-3 py-2 rounded-lg transition-colors cursor-pointer text-sm ${activeTab === 'hero'
-                                    ? 'bg-primary/10 text-primary-dark'
-                                    : 'text-text-muted hover:text-text-main hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-primary/10 text-primary-dark'
+                                : 'text-text-muted hover:text-text-main hover:bg-gray-100 dark:hover:bg-gray-800'
                                 }`}
                         >
                             <span className="material-symbols-outlined text-lg">person</span>
@@ -187,8 +232,8 @@ export default function AdminHomePage() {
                         <button
                             onClick={() => setActiveTab('footer')}
                             className={`flex items-center gap-2 font-medium px-3 py-2 rounded-lg transition-colors cursor-pointer text-sm ${activeTab === 'footer'
-                                    ? 'bg-primary/10 text-primary-dark'
-                                    : 'text-text-muted hover:text-text-main hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-primary/10 text-primary-dark'
+                                : 'text-text-muted hover:text-text-main hover:bg-gray-100 dark:hover:bg-gray-800'
                                 }`}
                         >
                             <span className="material-symbols-outlined text-lg">bottom_navigation</span>
@@ -199,6 +244,26 @@ export default function AdminHomePage() {
                     {/* Hero Section Tab */}
                     {activeTab === 'hero' && (
                         <div className="p-6 space-y-6">
+                            {/* Profile Photo & Resume */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <ImageUpload
+                                    label="Profile Photo"
+                                    folder="profile/avatar"
+                                    currentUrl={formData.avatar_url}
+                                    onUpload={(url) => setFormData(prev => ({ ...prev, avatar_url: url }))}
+                                    accept="image/*"
+                                    helperText="JPG, PNG, max 5MB"
+                                />
+                                <ImageUpload
+                                    label="Resume / CV"
+                                    folder="profile/resume"
+                                    currentUrl={formData.resume_url}
+                                    onUpload={(url) => setFormData(prev => ({ ...prev, resume_url: url }))}
+                                    accept=".pdf,.doc,.docx"
+                                    helperText="PDF recommended, max 10MB"
+                                />
+                            </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-text-main dark:text-white mb-2">Full Name</label>
@@ -309,6 +374,48 @@ export default function AdminHomePage() {
                                 />
                             </div>
 
+                            {/* Social Links Section */}
+                            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <h4 className="text-sm font-bold text-text-main dark:text-white mb-4 flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-lg text-primary-dark">share</span>
+                                    Social Links
+                                </h4>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-text-main dark:text-white mb-2">LinkedIn URL</label>
+                                        <input
+                                            type="url"
+                                            value={formData.social_links?.linkedin || ''}
+                                            onChange={(e) => updateSocialLink('linkedin', e.target.value)}
+                                            className="w-full bg-white dark:bg-[#0d0d0d] border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm text-text-main dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                                            placeholder="https://linkedin.com/in/username"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-text-main dark:text-white mb-2">GitHub URL</label>
+                                        <input
+                                            type="url"
+                                            value={formData.social_links?.github || ''}
+                                            onChange={(e) => updateSocialLink('github', e.target.value)}
+                                            className="w-full bg-white dark:bg-[#0d0d0d] border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm text-text-main dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                                            placeholder="https://github.com/username"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-text-main dark:text-white mb-2">Twitter / X URL</label>
+                                        <input
+                                            type="url"
+                                            value={formData.social_links?.twitter || ''}
+                                            onChange={(e) => updateSocialLink('twitter', e.target.value)}
+                                            className="w-full bg-white dark:bg-[#0d0d0d] border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm text-text-main dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all"
+                                            placeholder="https://twitter.com/username"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Contact Information Section */}
                             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                                 <h4 className="text-sm font-bold text-text-main dark:text-white mb-4 flex items-center gap-2">
                                     <span className="material-symbols-outlined text-lg text-primary-dark">contact_mail</span>
