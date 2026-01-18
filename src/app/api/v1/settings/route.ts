@@ -66,13 +66,13 @@ export async function PUT(request: NextRequest) {
                     const { data, error } = await (supabase as any)
                         .from('site_settings')
                         .insert(body)
-                        .select()
-                        .single();
+                        .select();
 
                     if (error) {
+                        console.error('Settings insert error:', error);
                         return errorResponse(error.message, 400, rateLimitInfo);
                     }
-                    return successResponse(data, 201, rateLimitInfo);
+                    return successResponse(data?.[0] || data, 201, rateLimitInfo);
                 }
 
                 // Update existing settings
@@ -81,14 +81,14 @@ export async function PUT(request: NextRequest) {
                     .from('site_settings')
                     .update(body)
                     .eq('id', existingSettings.id)
-                    .select()
-                    .single();
+                    .select();
 
                 if (error) {
+                    console.error('Settings update error:', error);
                     return errorResponse(error.message, 400, rateLimitInfo);
                 }
 
-                return successResponse(data, 200, rateLimitInfo);
+                return successResponse(data?.[0] || data, 200, rateLimitInfo);
             } catch (err) {
                 console.error('Error updating settings:', err);
                 return errorResponse('Internal server error', 500, rateLimitInfo);

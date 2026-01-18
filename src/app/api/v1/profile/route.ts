@@ -60,13 +60,13 @@ export async function PUT(request: NextRequest) {
                     const { data, error } = await (supabase as any)
                         .from('profile')
                         .insert(body)
-                        .select()
-                        .single();
+                        .select();
 
                     if (error) {
+                        console.error('Profile insert error:', error);
                         return errorResponse(error.message, 400, rateLimitInfo);
                     }
-                    return successResponse(data, 201, rateLimitInfo);
+                    return successResponse(data?.[0] || data, 201, rateLimitInfo);
                 }
 
                 // Update existing profile
@@ -75,14 +75,14 @@ export async function PUT(request: NextRequest) {
                     .from('profile')
                     .update(body)
                     .eq('id', existingProfile.id)
-                    .select()
-                    .single();
+                    .select();
 
                 if (error) {
+                    console.error('Profile update error:', error);
                     return errorResponse(error.message, 400, rateLimitInfo);
                 }
 
-                return successResponse(data, 200, rateLimitInfo);
+                return successResponse(data?.[0] || data, 200, rateLimitInfo);
             } catch (err) {
                 console.error('Error updating profile:', err);
                 return errorResponse('Internal server error', 500, rateLimitInfo);
