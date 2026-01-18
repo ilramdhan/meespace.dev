@@ -242,15 +242,43 @@ export function TechStackModal({ isOpen, onClose, editData }: TechStackModalProp
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-text-main dark:text-white ml-1">
-                                Icon (Symbol)
+                                Icon
                             </label>
-                            <input
-                                type="text"
-                                placeholder="e.g. code, brush"
-                                value={formData.icon}
-                                onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
-                                className="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-gray-800 focus:border-sage-green focus:ring-0 text-text-main dark:text-white placeholder-gray-400 transition-all font-medium"
-                            />
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="e.g. code, brush"
+                                    value={formData.icon}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, icon: e.target.value }))}
+                                    className="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-gray-800 focus:border-sage-green focus:ring-0 text-text-main dark:text-white placeholder-gray-400 transition-all font-medium"
+                                />
+                                {/* Preview icon */}
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                    <span className="material-symbols-outlined text-text-muted">{formData.icon || 'code'}</span>
+                                </div>
+                            </div>
+                            {/* Common icons */}
+                            <div className="flex flex-wrap gap-1.5 pt-1">
+                                {['code', 'brush', 'analytics', 'data_object', 'cloud', 'terminal', 'hub', 'web', 'api', 'memory'].map(icon => (
+                                    <button
+                                        key={icon}
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, icon }))}
+                                        className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${formData.icon === icon
+                                            ? 'border-sage-green bg-sage-light dark:bg-sage-green/20'
+                                            : 'border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-white/10'
+                                            }`}
+                                        title={icon}
+                                    >
+                                        <span className="material-symbols-outlined text-sm">{icon}</span>
+                                    </button>
+                                ))}
+                            </div>
+                            <p className="text-[10px] text-text-muted">
+                                <a href="https://fonts.google.com/icons" target="_blank" rel="noopener noreferrer" className="underline hover:text-sage-green">
+                                    Browse all icons →
+                                </a>
+                            </p>
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-text-main dark:text-white ml-1">
@@ -282,11 +310,11 @@ export function TechStackModal({ isOpen, onClose, editData }: TechStackModalProp
                         <button
                             type="button"
                             onClick={() => setFormData(prev => ({ ...prev, is_active: !prev.is_active }))}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.is_active ? 'bg-sage-green' : 'bg-gray-300 dark:bg-gray-600'
+                            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors cursor-pointer ${formData.is_active ? 'bg-sage-green' : 'bg-gray-300 dark:bg-gray-600'
                                 }`}
                         >
                             <span
-                                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${formData.is_active ? 'translate-x-6' : 'translate-x-1'
+                                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md border border-gray-200 transition-transform ${formData.is_active ? 'translate-x-6' : 'translate-x-1'
                                     }`}
                             />
                         </button>

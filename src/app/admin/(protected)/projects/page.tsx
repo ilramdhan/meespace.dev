@@ -341,6 +341,8 @@ export default function AdminProjectsPage() {
             <ProjectModal
                 isOpen={isModalOpen}
                 onClose={() => handleModalClose()}
+                onSuccess={fetchProjects}
+                editData={editingProject}
             />
 
             {/* Delete Confirmation Modal */}

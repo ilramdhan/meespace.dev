@@ -14,29 +14,41 @@ interface Experience {
     title: string;
     company: string;
     location?: string;
+    employment_type?: string;
     start_date: string;
     end_date?: string;
     is_current: boolean;
     description?: string;
+    highlights?: string[];
+    tags?: string[];
+    color?: string;
 }
 
 interface Education {
     id: string;
     degree: string;
-    institution: string;
+    school: string;
     field_of_study?: string;
-    start_year: number;
+    location?: string;
+    start_year?: number;
     end_year?: number;
     gpa?: string;
+    description?: string;
+    achievements?: string[];
 }
 
 interface Certification {
     id: string;
     name: string;
+    short_name?: string;
+    subtitle?: string;
     issuer: string;
-    issue_date: string;
+    issue_date?: string;
     expiry_date?: string;
+    credential_id?: string;
     credential_url?: string;
+    certificate_file_url?: string;
+    icon?: string;
 }
 
 interface DeleteItem {
@@ -241,7 +253,7 @@ export default function AdminExperiencePage() {
                             <div key={edu.id} className="p-6 flex flex-col md:flex-row md:items-center gap-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group relative">
                                 <div className="md:pl-2 flex-1">
                                     <h4 className="text-base font-bold text-text-main dark:text-white">{edu.degree}</h4>
-                                    <div className="text-sm text-text-main dark:text-gray-300 font-medium mt-0.5">{edu.institution}</div>
+                                    <div className="text-sm text-text-main dark:text-gray-300 font-medium mt-0.5">{edu.school}</div>
                                     <div className="flex flex-wrap items-center gap-y-2 gap-x-4 mt-2 text-xs text-text-muted dark:text-gray-500">
                                         <span className="flex items-center gap-1.5">
                                             <span className="material-symbols-outlined text-sm">calendar_month</span>
@@ -295,7 +307,7 @@ export default function AdminExperiencePage() {
                                     <div className="flex flex-wrap items-center gap-y-2 gap-x-4 mt-2 text-xs text-text-muted dark:text-gray-500">
                                         <span className="flex items-center gap-1.5">
                                             <span className="material-symbols-outlined text-sm">calendar_month</span>
-                                            {formatDate(cert.issue_date)}
+                                            {cert.issue_date ? formatDate(cert.issue_date) : 'Not specified'}
                                         </span>
                                         {cert.expiry_date && (
                                             <span className="flex items-center gap-1.5">
@@ -328,9 +340,9 @@ export default function AdminExperiencePage() {
             </div>
 
             {/* Modals */}
-            <ExperienceModal isOpen={isExpModalOpen} onClose={() => handleExpModalClose()} />
-            <EducationModal isOpen={isEduModalOpen} onClose={() => handleEduModalClose()} />
-            <CertificationModal isOpen={isCertModalOpen} onClose={() => handleCertModalClose()} />
+            <ExperienceModal isOpen={isExpModalOpen} onClose={() => handleExpModalClose()} onSuccess={fetchData} editData={editingExp} />
+            <EducationModal isOpen={isEduModalOpen} onClose={() => handleEduModalClose()} onSuccess={fetchData} editData={editingEdu} />
+            <CertificationModal isOpen={isCertModalOpen} onClose={() => handleCertModalClose()} onSuccess={fetchData} editData={editingCert} />
 
             {/* Delete Confirmation Modal */}
             <ConfirmModal

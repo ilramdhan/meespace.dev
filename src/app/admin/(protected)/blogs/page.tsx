@@ -17,7 +17,9 @@ interface BlogPost {
     view_count: number;
     created_at: string;
     published_at?: string;
-    category?: { name: string };
+    category?: { id: string; name: string; };
+    featured_image_url?: string;
+    read_time_minutes?: number;
 }
 
 interface ApiResponse {
@@ -299,6 +301,11 @@ export default function AdminBlogPage() {
             <BlogModal
                 isOpen={isModalOpen}
                 onClose={() => handleModalClose()}
+                onSuccess={fetchPosts}
+                editData={editingPost ? {
+                    ...editingPost,
+                    category_id: editingPost.category?.id || ''
+                } : null}
             />
 
             {/* Delete Confirmation Modal */}
