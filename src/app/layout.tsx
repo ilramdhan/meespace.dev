@@ -13,50 +13,74 @@ const inter = Inter({
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
-  title: {
-    default: 'Meyspace | Portfolio',
-    template: '%s | Meyspace',
-  },
-  description: 'Personal portfolio website showcasing projects, insights, and professional experience.',
-  keywords: ['Portfolio', 'Developer', 'Designer', 'Projects', 'Blog', 'Insights'],
-  authors: [{ name: 'Meyspace' }],
-  creator: 'Meyspace',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: '/apple-touch-icon.png',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: baseUrl,
-    siteName: 'Meyspace',
-    title: 'Meyspace | Portfolio',
-    description: 'Personal portfolio website showcasing projects, insights, and professional experience.',
-    images: [
-      {
-        url: `${baseUrl}/og-image.svg`,
-        width: 1200,
-        height: 630,
-        alt: 'Meyspace Portfolio',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Meyspace | Portfolio',
-    description: 'Personal portfolio website showcasing projects, insights, and professional experience.',
-    images: [`${baseUrl}/og-image.svg`],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+// Fetch settings for dynamic metadata
+async function getSettings() {
+  try {
+    const res = await fetch(`${baseUrl}/api/v1/settings`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.data;
+  } catch {
+    return null;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings();
+
+  const siteName = settings?.site_name || 'Meyspace';
+  const seoTitle = settings?.seo_title || `${siteName} | Portfolio`;
+  const seoDescription = settings?.seo_description || 'Personal portfolio website showcasing projects, insights, and professional experience.';
+  const seoKeywords = settings?.seo_keywords?.split(',').map((k: string) => k.trim()) || ['Portfolio', 'Developer', 'Designer', 'Projects', 'Blog', 'Insights'];
+  const faviconUrl = settings?.favicon_url || '/favicon.ico';
+  const ogImageUrl = settings?.og_image_url || `${baseUrl}/og-image.svg`;
+
+  return {
+    metadataBase: new URL(baseUrl),
+    title: {
+      default: seoTitle,
+      template: `%s | ${siteName}`,
+    },
+    description: seoDescription,
+    keywords: seoKeywords,
+    authors: [{ name: siteName }],
+    creator: siteName,
+    icons: {
+      icon: [
+        { url: faviconUrl, sizes: 'any' },
+      ],
+      apple: faviconUrl,
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: baseUrl,
+      siteName: siteName,
+      title: seoTitle,
+      description: seoDescription,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${siteName} Portfolio`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoTitle,
+      description: seoDescription,
+      images: [ogImageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
 export default function RootLayout({
   children,

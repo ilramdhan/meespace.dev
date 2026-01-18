@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 const NAV_ITEMS = [
     { label: "Overview", icon: "dashboard", href: "/admin/dashboard" },
@@ -12,22 +14,43 @@ const NAV_ITEMS = [
     { label: "Blog/Insights", icon: "article", href: "/admin/blogs" },
     { label: "Comments", icon: "chat_bubble", href: "/admin/comments" },
     { label: "Experience", icon: "work_history", href: "/admin/experiences" },
+    { label: "Education", icon: "school", href: "/admin/education" },
+    { label: "Certifications", icon: "verified", href: "/admin/certifications" },
     { label: "Tech Stack", icon: "memory", href: "/admin/tech-stack" },
+    { label: "Stats", icon: "analytics", href: "/admin/stats" },
+    { label: "Skills", icon: "star", href: "/admin/skills" },
     { label: "About Content", icon: "person", href: "/admin/about" },
     { label: "Home Content", icon: "home", href: "/admin/home" },
     { label: "Messages", icon: "mail", href: "/admin/messages" },
     { label: "Settings", icon: "settings", href: "/admin/settings" },
 ];
 
+interface SiteSettings {
+    site_name?: string;
+    logo_url?: string;
+    logo_url_dark?: string;
+}
+
 export function AdminSidebar() {
     const pathname = usePathname();
     const router = useRouter();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [settings, setSettings] = useState<SiteSettings | null>(null);
+    const [mounted, setMounted] = useState(false);
+    const { resolvedTheme } = useTheme();
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
+
+    useEffect(() => {
+        setMounted(true);
+        fetch('/api/v1/settings')
+            .then(res => res.json())
+            .then(data => setSettings(data.data || {}))
+            .catch(() => setSettings({}));
+    }, []);
 
     const handleLogout = async () => {
         setIsLoggingOut(true);
@@ -40,16 +63,34 @@ export function AdminSidebar() {
         }
     };
 
+    const siteName = settings?.site_name || 'Meyspace';
+
+    // Determine which logo to use based on theme
+    const isDark = mounted && resolvedTheme === 'dark';
+    const logoUrl = isDark && settings?.logo_url_dark
+        ? settings.logo_url_dark
+        : settings?.logo_url;
+
     return (
         <aside className="w-64 bg-white dark:bg-[#1e1e1e] border-r border-gray-200 dark:border-gray-800 flex flex-col h-full shrink-0">
             <div className="p-6 flex items-center gap-3">
-                <div className="size-8 bg-primary rounded-full flex items-center justify-center text-text-main">
-                    <span className="material-symbols-outlined text-lg">
-                        data_object
-                    </span>
-                </div>
+                {logoUrl ? (
+                    <Image
+                        src={logoUrl}
+                        alt={siteName}
+                        width={32}
+                        height={32}
+                        className="h-8 w-auto object-contain"
+                    />
+                ) : (
+                    <div className="size-8 bg-primary rounded-full flex items-center justify-center text-text-main">
+                        <span className="material-symbols-outlined text-lg">
+                            data_object
+                        </span>
+                    </div>
+                )}
                 <h1 className="text-text-main dark:text-white text-lg font-bold tracking-tight">
-                    Admin Panel
+                    {siteName}
                 </h1>
             </div>
 

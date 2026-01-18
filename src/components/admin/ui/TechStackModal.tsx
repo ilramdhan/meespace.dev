@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useToast } from "@/components/shared/Toast";
 import { apiCall } from "@/hooks/useApi";
+import { ImageUpload } from "@/components/shared/ImageUpload";
 
 interface TechStackItem {
     id?: string;
     name: string;
     icon: string;
+    icon_url?: string;
     color: string;
     category: string;
     proficiency: string;
@@ -33,6 +35,7 @@ export function TechStackModal({ isOpen, onClose, editData }: TechStackModalProp
     const [formData, setFormData] = useState<TechStackItem>({
         name: '',
         icon: 'code',
+        icon_url: '',
         color: 'blue',
         category: 'Development',
         proficiency: 'Intermediate',
@@ -47,6 +50,7 @@ export function TechStackModal({ isOpen, onClose, editData }: TechStackModalProp
                 setFormData({
                     name: editData.name || '',
                     icon: editData.icon || 'code',
+                    icon_url: editData.icon_url || '',
                     color: editData.color || 'blue',
                     category: editData.category || 'Development',
                     proficiency: editData.proficiency || 'Intermediate',
@@ -58,6 +62,7 @@ export function TechStackModal({ isOpen, onClose, editData }: TechStackModalProp
                 setFormData({
                     name: '',
                     icon: 'code',
+                    icon_url: '',
                     color: 'blue',
                     category: 'Development',
                     proficiency: 'Intermediate',
@@ -236,6 +241,34 @@ export function TechStackModal({ isOpen, onClose, editData }: TechStackModalProp
                             <span>Intermediate</span>
                             <span>Expert</span>
                         </div>
+                    </div>
+
+                    {/* Custom Icon Image */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-semibold text-text-main dark:text-white ml-1">
+                            Custom Icon Image (Optional)
+                        </label>
+                        <p className="text-xs text-text-muted ml-1 -mt-1">
+                            Upload a PNG/SVG logo. If set, this will be used instead of the icon below.
+                        </p>
+                        <ImageUpload
+                            label=""
+                            folder="tech-stack/icons"
+                            currentUrl={formData.icon_url}
+                            onUpload={(url) => setFormData(prev => ({ ...prev, icon_url: url }))}
+                            accept="image/png,image/svg+xml,image/webp"
+                            helperText="PNG or SVG, transparent bg recommended"
+                        />
+                        {formData.icon_url && (
+                            <button
+                                type="button"
+                                onClick={() => setFormData(prev => ({ ...prev, icon_url: '' }))}
+                                className="text-xs text-red-500 hover:text-red-600 flex items-center gap-1 cursor-pointer"
+                            >
+                                <span className="material-symbols-outlined text-sm">delete</span>
+                                Remove custom icon
+                            </button>
+                        )}
                     </div>
 
                     {/* Icon & Color */}

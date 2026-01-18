@@ -1,5 +1,7 @@
 import { BentoCard } from "@/components/public/BentoCard";
 import { ContactForm } from "@/components/public/ContactForm";
+import { SkillsCarousel } from "@/components/public/SkillsCarousel";
+import { TechMarquee } from "@/components/public/TechMarquee";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -51,7 +53,7 @@ async function getTechStack() {
 async function getBlogPosts() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/v1/blog?status=published&limit=3`, { next: { revalidate: 60 } });
+    const res = await fetch(`${baseUrl}/api/v1/blog?status=published&limit=4`, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const data = await res.json();
     return data.data?.posts || [];
@@ -66,7 +68,7 @@ async function getSkills() {
     const res = await fetch(`${baseUrl}/api/v1/skills`, { next: { revalidate: 60 } });
     if (!res.ok) return [];
     const data = await res.json();
-    return data.data || [];
+    return data.data?.skills || [];
   } catch {
     return [];
   }
@@ -290,62 +292,14 @@ export default async function Home() {
           )}
         </BentoCard>
 
-        {/* Tools Grid */}
+        {/* Tools & Technologies - Auto-sliding Marquee */}
         {techStackArr.length > 0 && (
-          <div className="col-span-1 md:col-span-4 mt-2">
-            <h3 className="text-lg font-bold text-text-main dark:text-white mb-4 pl-1">
-              Tools & Technologies
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-              {techStackArr.map((tool: { id: string; name: string; icon?: string; icon_url?: string; color?: string }) => (
-                <BentoCard
-                  key={tool.id}
-                  className={`p-4 flex flex-col items-center justify-center gap-2 ${getToolHoverColor(tool.color || 'blue')} transition-colors`}
-                >
-                  {tool.icon_url ? (
-                    <Image
-                      src={tool.icon_url}
-                      alt={tool.name}
-                      width={32}
-                      height={32}
-                      className="w-8 h-8"
-                    />
-                  ) : (
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getStatColorClasses(tool.color || 'blue')}`}>
-                      <span className="material-symbols-outlined">{tool.icon || 'code'}</span>
-                    </div>
-                  )}
-                  <span className="text-xs font-semibold text-text-muted dark:text-gray-400">
-                    {tool.name}
-                  </span>
-                </BentoCard>
-              ))}
-            </div>
-          </div>
+          <TechMarquee tools={techStackArr} />
         )}
 
-        {/* Core Expertise */}
+        {/* Core Expertise - Carousel with arrows */}
         {skillsArr.length > 0 && (
-          <>
-            <div className="col-span-1 md:col-span-4 mt-8 mb-2 flex items-center gap-4">
-              <h3 className="text-xl font-bold text-text-main dark:text-white">
-                Core Expertise
-              </h3>
-              <div className="h-[1px] flex-1 bg-gray-200 dark:bg-gray-700"></div>
-            </div>
-
-            {skillsArr.slice(0, 4).map((skill: { id: string; title: string; description: string; icon: string }) => (
-              <BentoCard key={skill.id} className="col-span-1 p-5 flex flex-col gap-3">
-                <div className="size-10 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-text-main dark:text-white">
-                  <span className="material-symbols-outlined">{skill.icon || 'star'}</span>
-                </div>
-                <div>
-                  <h4 className="font-bold text-text-main dark:text-white">{skill.title}</h4>
-                  <p className="text-xs text-text-muted dark:text-gray-400 mt-1">{skill.description}</p>
-                </div>
-              </BentoCard>
-            ))}
-          </>
+          <SkillsCarousel skills={skillsArr} />
         )}
 
         {/* Featured Projects */}
@@ -371,8 +325,8 @@ export default async function Home() {
               <BentoCard key={project.id} className="col-span-1 md:col-span-2 p-6 flex flex-col justify-between group">
                 <div className="flex items-start justify-between mb-4">
                   <div className={`size-12 rounded-lg ${index % 2 === 0
-                      ? 'bg-primary/20 text-text-main'
-                      : 'bg-accent-purple/50 text-purple-900 dark:text-purple-200'
+                    ? 'bg-primary/20 text-text-main'
+                    : 'bg-accent-purple/50 text-purple-900 dark:text-purple-200'
                     } flex items-center justify-center`}>
                     <span className="material-symbols-outlined">{project.icon || 'folder'}</span>
                   </div>
@@ -383,8 +337,8 @@ export default async function Home() {
                 <div>
                   <Link href={`/projects/${project.slug}`}>
                     <h3 className={`text-xl font-bold text-text-main dark:text-white mb-2 ${index % 2 === 0
-                        ? 'group-hover:text-primary-dark'
-                        : 'group-hover:text-purple-700 dark:group-hover:text-purple-300'
+                      ? 'group-hover:text-primary-dark'
+                      : 'group-hover:text-purple-700 dark:group-hover:text-purple-300'
                       } transition-colors`}>
                       {project.title}
                     </h3>
@@ -419,7 +373,7 @@ export default async function Home() {
               <Link href="/insights" className="text-sm font-semibold text-primary-dark hover:text-text-main transition-colors">View All</Link>
             </div>
 
-            {postsArr.slice(0, 3).map((post: {
+            {postsArr.slice(0, 4).map((post: {
               id: string;
               title: string;
               excerpt: string;
@@ -434,8 +388,8 @@ export default async function Home() {
                 <BentoCard
                   key={post.id}
                   className={`${index === 2
-                      ? 'col-span-1 md:col-span-2 md:col-start-2 lg:col-span-1 lg:col-start-auto'
-                      : 'col-span-1'
+                    ? 'col-span-1 md:col-span-2 md:col-start-2 lg:col-span-1 lg:col-start-auto'
+                    : 'col-span-1'
                     } flex flex-col h-full !p-0 cursor-pointer`}
                 >
                   <div className="h-40 bg-gray-100 dark:bg-gray-800 relative overflow-hidden">

@@ -241,13 +241,13 @@ export default async function AboutPage() {
                 </BentoCard>
 
                 {/* Fun Fact Card */}
-                <BentoCard className="col-span-1 !bg-accent-purple/30 dark:!bg-purple-900/10 p-6 flex flex-col justify-between !border-accent-purple/50 dark:!border-purple-800/30">
+                <BentoCard className="col-span-1 !bg-accent-purple/30 dark:!bg-purple-900/10 p-6 flex flex-col !border-accent-purple/50 dark:!border-purple-800/30">
                     <div className="flex justify-between items-start">
                         <div className="size-10 rounded-full bg-white dark:bg-purple-900/50 flex items-center justify-center text-purple-600 dark:text-purple-300">
                             <span className="material-symbols-outlined">lightbulb</span>
                         </div>
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-3">
                         <h4 className="font-bold text-text-main dark:text-white text-lg mb-2">{funFact.title}</h4>
                         <p className="text-sm text-text-muted dark:text-purple-200">{funFact.description}</p>
                     </div>
@@ -479,69 +479,70 @@ export default async function AboutPage() {
                     )}
                 </BentoCard>
 
-                {/* Offline Mode Card */}
-                <BentoCard className="col-span-1 !bg-[#fce1e4]/30 dark:!bg-rose-900/10 p-6 flex flex-col justify-between !border-[#fce1e4]/50 dark:!border-rose-800/30 h-fit">
-                    <div className="flex justify-between items-start">
+                {/* Right column: Education + Offline stacked */}
+                <div className="col-span-1 flex flex-col gap-6">
+                    {/* Education Card */}
+                    {primaryEducation && (
+                        <BentoCard className="p-6 flex flex-col gap-4">
+                            <div className="flex items-start justify-between">
+                                <div className="p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg text-orange-600 dark:text-orange-400">
+                                    <span className="material-symbols-outlined text-2xl">school</span>
+                                </div>
+                                <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded">
+                                    {primaryEducation.end_year || primaryEducation.start_year}
+                                </span>
+                            </div>
+                            <div>
+                                <span className="text-xs font-semibold text-text-muted dark:text-gray-500 uppercase tracking-wider">Education</span>
+                                <h4 className="font-bold text-text-main dark:text-white text-lg mt-1">
+                                    {primaryEducation.degree}
+                                </h4>
+                                <p className="text-sm text-text-muted dark:text-gray-400 mt-1">
+                                    {primaryEducation.school || primaryEducation.institution}
+                                </p>
+                                {primaryEducation.gpa && (
+                                    <p className="text-xs text-orange-600 dark:text-orange-400 mt-2">
+                                        GPA: {primaryEducation.gpa}
+                                    </p>
+                                )}
+                                {primaryEducation.achievements && primaryEducation.achievements.length > 0 && (
+                                    <p className="text-xs text-text-muted dark:text-gray-400 italic mt-2">
+                                        {primaryEducation.achievements[0]}
+                                    </p>
+                                )}
+                            </div>
+                        </BentoCard>
+                    )}
+
+                    {/* Fallback education if none from API */}
+                    {!primaryEducation && (
+                        <BentoCard className="p-6 flex flex-col gap-4">
+                            <div className="flex items-start justify-between">
+                                <div className="p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg text-orange-600 dark:text-orange-400">
+                                    <span className="material-symbols-outlined text-2xl">school</span>
+                                </div>
+                                <span className="text-xs font-semibold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded">2018</span>
+                            </div>
+                            <div>
+                                <span className="text-xs font-semibold text-text-muted dark:text-gray-500 uppercase tracking-wider">Education</span>
+                                <h4 className="font-bold text-text-main dark:text-white text-lg mt-1">B.S. Information Systems</h4>
+                                <p className="text-sm text-text-muted dark:text-gray-400 mt-1">University of Technology</p>
+                                <p className="text-xs text-text-muted dark:text-gray-400 italic mt-2">Dean&apos;s List • Graduated Cum Laude</p>
+                            </div>
+                        </BentoCard>
+                    )}
+
+                    {/* Offline Mode Card */}
+                    <BentoCard className="!bg-[#fce1e4]/30 dark:!bg-rose-900/10 p-6 flex flex-col gap-4 !border-[#fce1e4]/50 dark:!border-rose-800/30">
                         <div className="size-10 rounded-full bg-white dark:bg-rose-900/50 flex items-center justify-center text-rose-500 dark:text-rose-300">
                             <span className="material-symbols-outlined">hiking</span>
                         </div>
-                    </div>
-                    <div className="mt-4">
-                        <h4 className="font-bold text-text-main dark:text-white text-lg mb-2">{offline.title}</h4>
-                        <p className="text-sm text-text-muted dark:text-rose-200">{offline.description}</p>
-                    </div>
-                </BentoCard>
-
-                {/* Education Card - Full width */}
-                {primaryEducation && (
-                    <BentoCard className="col-span-1 md:col-span-3 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div className="flex flex-col md:flex-row md:items-center gap-6">
-                            <div className="size-16 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
-                                <span className="material-symbols-outlined text-3xl">school</span>
-                            </div>
-                            <div>
-                                <span className="text-xs font-semibold text-text-muted dark:text-gray-500 uppercase tracking-wider">Education</span>
-                                <h3 className="text-xl md:text-2xl font-bold text-text-main dark:text-white mt-1">
-                                    {primaryEducation.degree}
-                                </h3>
-                                <p className="text-text-muted dark:text-gray-400 font-medium">
-                                    {primaryEducation.school || primaryEducation.institution}
-                                    {primaryEducation.achievements && primaryEducation.achievements.length > 0 && ` • ${primaryEducation.achievements[0]}`}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-start md:items-end gap-1">
-                            <span className="text-sm font-semibold text-text-main dark:text-white bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">
-                                Class of {primaryEducation.end_year || primaryEducation.start_year}
-                            </span>
-                            {primaryEducation.gpa && (
-                                <span className="text-xs text-text-muted dark:text-gray-500">
-                                    GPA: {primaryEducation.gpa}
-                                </span>
-                            )}
+                        <div>
+                            <h4 className="font-bold text-text-main dark:text-white text-lg">{offline.title}</h4>
+                            <p className="text-sm text-text-muted dark:text-rose-200 mt-2">{offline.description}</p>
                         </div>
                     </BentoCard>
-                )}
-
-                {/* Fallback education if none from API */}
-                {!primaryEducation && (
-                    <BentoCard className="col-span-1 md:col-span-3 p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <div className="flex flex-col md:flex-row md:items-center gap-6">
-                            <div className="size-16 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
-                                <span className="material-symbols-outlined text-3xl">school</span>
-                            </div>
-                            <div>
-                                <span className="text-xs font-semibold text-text-muted dark:text-gray-500 uppercase tracking-wider">Education</span>
-                                <h3 className="text-xl md:text-2xl font-bold text-text-main dark:text-white mt-1">B.S. Information Systems</h3>
-                                <p className="text-text-muted dark:text-gray-400 font-medium">University of Technology • Dean&apos;s List</p>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-start md:items-end gap-1">
-                            <span className="text-sm font-semibold text-text-main dark:text-white bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg">Class of 2018</span>
-                            <span className="text-xs text-text-muted dark:text-gray-500">Graduated Cum Laude</span>
-                        </div>
-                    </BentoCard>
-                )}
+                </div>
             </div>
         </div>
     );
