@@ -15,10 +15,14 @@ Apply the migration file that creates the necessary RLS policies.
 ## How to Apply the Fix
 
 ### Option 1: Using Supabase CLI (Recommended)
-1. Make sure you have the Supabase CLI installed
+1. Make sure you have the Supabase CLI installed and linked to your project
 2. Run the migration:
    ```bash
-   supabase migration up
+   # Push all pending migrations to your database
+   supabase db push
+   
+   # Or apply a specific migration
+   supabase migration up --db-url <your-database-url>
    ```
 
 ### Option 2: Using Supabase Dashboard (SQL Editor)

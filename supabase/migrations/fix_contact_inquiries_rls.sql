@@ -4,6 +4,8 @@
 -- ============================================================================
 
 -- Ensure is_admin() function exists (required for admin policy)
+-- Note: Using CREATE OR REPLACE to handle cases where the function may not exist yet
+-- This ensures the migration can be run standalone without dependencies on main schema
 CREATE OR REPLACE FUNCTION is_admin()
 RETURNS BOOLEAN AS $$
 BEGIN
